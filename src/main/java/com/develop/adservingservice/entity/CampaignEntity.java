@@ -1,12 +1,14 @@
 package com.develop.adservingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "campaing")
-public class CampaingEntity {
+import java.util.List;
 
+@Entity
+@Table(name = "campaign")
+public class CampaignEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +20,17 @@ public class CampaingEntity {
     @JoinColumn(name = "advertiser_id")
     private AdvertiserEntity advertiser;
 
+    public List<AdEntity> getAds() {
+        return ads;
+    }
+
+    public void setAds(List<AdEntity> ads) {
+        this.ads = ads;
+    }
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "campaign")
+    private List<AdEntity> ads;
     public Long getId() {
         return id;
     }

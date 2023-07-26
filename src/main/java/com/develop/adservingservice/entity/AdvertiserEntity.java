@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "advertiser")
 public class AdvertiserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +16,7 @@ public class AdvertiserEntity {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "advertiser")
-    private List<CampaingEntity> campaings;
+    private List<CampaignEntity> campaings;
 
     public Long getId() {
         return id;
@@ -43,11 +42,11 @@ public class AdvertiserEntity {
         this.country = country;
     }
 
-    public List<CampaingEntity> getCampaings() {
+    public List<CampaignEntity> getCampaings() {
         return campaings;
     }
 
-    public void setCampaings(List<CampaingEntity> campaings) {
+    public void setCampaings(List<CampaignEntity> campaings) {
         this.campaings = campaings;
     }
 }
