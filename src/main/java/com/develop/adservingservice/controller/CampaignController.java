@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CampaignController {
-
     @Autowired
     private CampaignRepository campaignRepo;
 
@@ -27,7 +26,7 @@ public class CampaignController {
         return campaign;
     }
 
-    @GetMapping("api/campaings")
+    @GetMapping("api/campaigns")
     public Iterable<CampaignEntity> getCampaings() {
         return campaignRepo.findAll();
     }
