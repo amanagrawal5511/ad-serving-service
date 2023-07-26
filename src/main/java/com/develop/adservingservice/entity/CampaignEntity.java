@@ -19,7 +19,9 @@ public class CampaignEntity {
     @ManyToOne
     @JoinColumn(name = "advertiser_id")
     private AdvertiserEntity advertiser;
-
+    @JsonManagedReference
+    @OneToMany(mappedBy = "campaign")
+    private List<AdEntity> ads;
     public List<AdEntity> getAds() {
         return ads;
     }
@@ -28,9 +30,7 @@ public class CampaignEntity {
         this.ads = ads;
     }
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "campaign")
-    private List<AdEntity> ads;
+
     public Long getId() {
         return id;
     }
