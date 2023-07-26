@@ -3,7 +3,6 @@ package com.develop.adservingservice.controller;
 import com.develop.adservingservice.dao.AdvertiserRepository;
 import com.develop.adservingservice.entity.AdvertiserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

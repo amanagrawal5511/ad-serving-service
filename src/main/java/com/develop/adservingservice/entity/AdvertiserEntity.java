@@ -1,6 +1,9 @@
 package com.develop.adservingservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "advertiser")
@@ -11,6 +14,10 @@ public class AdvertiserEntity {
     private Long id;
     private String name;
     private String country;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "advertiser")
+    private List<CampaingEntity> campaings;
 
     public Long getId() {
         return id;
@@ -36,5 +43,11 @@ public class AdvertiserEntity {
         this.country = country;
     }
 
+    public List<CampaingEntity> getCampaings() {
+        return campaings;
+    }
 
+    public void setCampaings(List<CampaingEntity> campaings) {
+        this.campaings = campaings;
+    }
 }
