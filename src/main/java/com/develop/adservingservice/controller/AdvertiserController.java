@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AdvertiserController {
-
     @Autowired
     private AdvertiserRepository AdvertiserRepo;
 
@@ -21,6 +20,6 @@ public class AdvertiserController {
 
     @GetMapping("api/advertisers")
         public Iterable<AdvertiserEntity> getAdvertisers(){
-            return AdvertiserRepo.findAll();
+        return AdvertiserRepo.findAll();
     }
 }
