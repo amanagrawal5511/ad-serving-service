@@ -8,14 +8,13 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "publisher")
-public class UserEntity {
+public class PublisherEntity {
     
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Long maxHeight;
-    private Long maxWidth;
+    private String domain;
 
 
     public Long getId() {
@@ -24,27 +23,20 @@ public class UserEntity {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-    public Long getMaxHeight() {
-        return maxHeight;
-    }
-    public void setMaxHeight(Long maxHeight) {
-        this.maxHeight = maxHeight;
-    }
-    public Long getMaxWidth() {
-        return maxWidth;
-    }
-    public void setMaxWidth(Long maxWidth) {
-        this.maxWidth = maxWidth;
-    }
-   
-
-   
-
 
 }

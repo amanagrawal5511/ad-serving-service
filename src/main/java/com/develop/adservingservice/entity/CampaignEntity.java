@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,24 @@ public class CampaignEntity {
     private Long id;
     private String name;
     private String status;
+    private LocalDate startDate;
+    private LocalDate endDate;
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 
     @JsonBackReference
     @ManyToOne
@@ -29,7 +48,6 @@ public class CampaignEntity {
     public void setAds(List<AdEntity> ads) {
         this.ads = ads;
     }
-
 
     public Long getId() {
         return id;
