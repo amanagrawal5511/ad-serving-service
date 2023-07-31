@@ -1,5 +1,7 @@
 package com.develop.adservingservice.entity;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
@@ -12,10 +14,12 @@ public class ImpEntity {
     private int maxWidth;
     private int maxHeight;
     private double bidFloor;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "publisher_id")
     private PublisherEntity publisher;
+
     public Long getId() {
         return id;
     }

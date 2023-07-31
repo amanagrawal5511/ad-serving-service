@@ -18,6 +18,7 @@ public class PublisherEntity {
     @JsonManagedReference
     @OneToMany(mappedBy = "publisher")
     private List<ImpEntity> imps;
+
     public Long getId() {
         return id;
     }
@@ -39,5 +40,13 @@ public class PublisherEntity {
     public void setName(String name) {
         this.name = name;
     }
+    public List<ImpEntity> getImps() {
+        return imps;
+    }
+    public void setImps(List<ImpEntity> imps) {
+        this.imps = imps;
+    }
+
+    
 
 }

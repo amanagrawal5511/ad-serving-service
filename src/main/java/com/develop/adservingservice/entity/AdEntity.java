@@ -13,10 +13,15 @@ public class AdEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "campaign_id")
     private CampaignEntity campaign;
+
+       @JsonManagedReference
+    @OneToMany(mappedBy = "ad")
+    private List<BannerEntity> banners;
 
     public List<BannerEntity> getBanners() {
         return banners;
@@ -25,10 +30,6 @@ public class AdEntity {
     public void setBanners(List<BannerEntity> banners) {
         this.banners = banners;
     }
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "ad")
-    private List<BannerEntity> banners;
 
     public String getName() {
         return name;

@@ -18,6 +18,8 @@ public class CampaignEntity {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    //Todo: Add budget = "budget": 10000.0
+
     public LocalDate getStartDate() {
         return startDate;
     }
