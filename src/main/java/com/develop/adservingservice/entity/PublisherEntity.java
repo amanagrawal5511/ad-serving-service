@@ -1,10 +1,9 @@
 package com.develop.adservingservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "publisher")
@@ -16,7 +15,9 @@ public class PublisherEntity {
     private String name;
     private String domain;
 
-
+    @JsonManagedReference
+    @OneToMany(mappedBy = "publisher")
+    private List<ImpEntity> imps;
     public Long getId() {
         return id;
     }
