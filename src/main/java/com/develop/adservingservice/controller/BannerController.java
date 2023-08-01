@@ -1,7 +1,7 @@
 package com.develop.adservingservice.controller;
 
-import com.develop.adservingservice.dao.AdRepository;
-import com.develop.adservingservice.dao.BannerRepository;
+import com.develop.adservingservice.Repository.AdRepository;
+import com.develop.adservingservice.Repository.BannerRepository;
 import com.develop.adservingservice.entity.AdEntity;
 import com.develop.adservingservice.entity.BannerEntity;
 import org.springframework.beans.factory.annotation.Autowired;

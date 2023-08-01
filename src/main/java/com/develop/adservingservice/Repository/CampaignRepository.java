@@ -1,4 +1,4 @@
-package com.develop.adservingservice.dao;
+package com.develop.adservingservice.Repository;
 
 import com.develop.adservingservice.entity.CampaignEntity;
 import org.springframework.data.repository.CrudRepository;

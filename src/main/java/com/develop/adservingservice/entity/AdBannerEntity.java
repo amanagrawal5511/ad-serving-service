@@ -4,18 +4,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="banner")
-public class BannerEntity {
+@Table(name="adbanner")
+public class AdBannerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int height;
-    private int width;
+    private double height;
+    private double width;
+
     @JsonBackReference
-    
-    @ManyToOne
-    @JoinColumn(name = "ad_id")
-    private AdEntity ad;
+    @OneToOne
+    @JoinColumn(name = "impression_id")
+    private ImpEntity impression;
 
     public Long getId() {
         return id;
@@ -25,27 +25,29 @@ public class BannerEntity {
         this.id = id;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public AdEntity getAd() {
-        return ad;
+    public ImpEntity getImpression() {
+        return impression;
     }
 
-    public void setAd(AdEntity ad) {
-        this.ad = ad;
+    public void setImpression(ImpEntity impression) {
+        this.impression = impression;
     }
+     
 }
+

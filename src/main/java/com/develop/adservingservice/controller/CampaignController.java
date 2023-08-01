@@ -1,7 +1,7 @@
 package com.develop.adservingservice.controller;
 
-import com.develop.adservingservice.dao.AdvertiserRepository;
-import com.develop.adservingservice.dao.CampaignRepository;
+import com.develop.adservingservice.Repository.AdvertiserRepository;
+import com.develop.adservingservice.Repository.CampaignRepository;
 import com.develop.adservingservice.entity.AdvertiserEntity;
 import com.develop.adservingservice.entity.CampaignEntity;
 import org.springframework.beans.factory.annotation.Autowired;
