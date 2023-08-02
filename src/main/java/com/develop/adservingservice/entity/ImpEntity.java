@@ -1,43 +1,34 @@
 package com.develop.adservingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="imp")
+@Table(name="impression")
 public class ImpEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int maxWidth;
-    private int maxHeight;
     private double bidFloor;
+    private Long adServedId;
+
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "publisher_id")
-    private PublisherEntity publisher;
-    public Long getId() {
-        return id;
-    }
+    @JoinColumn(name = "adrequest_id")
+    private AdRequestEntity adrequest;
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "impression")
+    private AdBannerEntity adBanner;
 
     public void setId(Long id) {
         this.id = id;
     }
-
-    public int getMaxWidth() {
-        return maxWidth;
-    }
-
-    public void setMaxWidth(int maxWidth) {
-        this.maxWidth = maxWidth;
-    }
-
-    public int getMaxHeight() {
-        return maxHeight;
-    }
-
-    public void setMaxHeight(int maxHeight) {
-        this.maxHeight = maxHeight;
+    
+    public Long getId() {
+        return id;
     }
 
     public double getBidFloor() {
@@ -47,10 +38,28 @@ public class ImpEntity {
     public void setBidFloor(double bidFloor) {
         this.bidFloor = bidFloor;
     }
-    public PublisherEntity getPublisher() {
-        return publisher;
+
+    public AdRequestEntity getAdrequest() {
+        return adrequest;
     }
-    public void setPublisher(PublisherEntity publisher) {
-        this.publisher = publisher;
+
+    public void setAdrequest(AdRequestEntity adrequest) {
+        this.adrequest = adrequest;
     }
+
+    public AdBannerEntity getAdBanner() {
+        return adBanner;
+    }
+
+    public void setAdBanner(AdBannerEntity adBanner) {
+        this.adBanner = adBanner;
+    }
+
+    public Long getAdServedId() {
+        return adServedId;
+    }
+
+    public void setAdServedId(Long adServedId) {
+        this.adServedId = adServedId;
+    }    
 }
