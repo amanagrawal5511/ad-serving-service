@@ -35,26 +35,26 @@ public class AdRequestResponse {
     @Autowired
     private AdRepository AdRepo;
 
-    @PostMapping("api/adRequest")
+    @GetMapping("api/adRequest")
     public ObjectNode serveAdRequest(@RequestParam(name ="adrequest_id") Long adrequestId ){
 
         AdRequestEntity adrequest = AdRequestRepo.findById(adrequestId)
-            .orElseThrow(() -> new RuntimeException("AdRequest not found with id: "));
-        System.out.println(adrequest);
+            .orElseThrow(() -> new IllegalArgumentException("Invalid AdRequest Id"));
+       // System.out.println(adrequest);
 
        // Getting Impressions from the AdRequest(Body)
 		List<ImpEntity> imps = adrequest.getImpression();
 		ImpEntity[] array = imps.toArray(new ImpEntity[imps.size()]);
-		for (int i=0; i<imps.size(); i++)
-		{
-			ImpEntity imp = array[i];
-			// Getting Banners from the Imp(Body) & saving them.
-			AdBannerRepo.save(imp.getAdBanner());
-			// Saving Imps
-			ImpRepo.save(imp);
-		}
+	// 	for (int i=0; i<imps.size(); i++)
+	// 	{
+	// 		ImpEntity imp = array[i];
+	// 		// Getting Banners from the Imp(Body) & saving them.
+	// 		AdBannerRepo.save(imp.getAdBanner());
+	// 		// Saving Imps
+	// 		ImpRepo.save(imp);
+	// 	}
 
-        AdRequestRepo.save(adrequest);
+    //     AdRequestRepo.save(adrequest);
         
         
         List<AdEntity> ads = (List<AdEntity>) AdRepo.findAll();
@@ -82,15 +82,18 @@ public class AdRequestResponse {
         for(ImpEntity imp: array){
 
             ObjectNode bid = JsonNodeFactory.instance.objectNode();
+            //System.out.println(imp.getId());
             bid.put("impid", imp.getId());
             bid.put("price",imp.getBidFloor());
             bid.put("nurl", "localhost:8080/api/winnotice?Id="+(adrequest.getId()));
 
-
-            AdEntity ad = AdRepo.findById(imp.getAdServedId()) 
-            .orElseThrow(() -> new RuntimeException("Ad not found with id: "));
-
+            Long id = imp.getAdServedId();
+            if(id != null){
+                AdEntity ad = AdRepo.findById(id) 
+            .orElseThrow(() -> new IllegalArgumentException("Invalid AdEntity Id"));
             bid.put("cid", ad.getCampaign().getId());
+            }
+            
             bids.add(bid);
         }
 
@@ -101,6 +104,7 @@ public class AdRequestResponse {
 	    adResponse.set("seatbid", seatbids);
         
         return adResponse;
+        //return adrequest;
     }
 
     @GetMapping("api/winnotice")
@@ -129,10 +133,13 @@ public class AdRequestResponse {
             bid.put("impid", imp.getId());
             bid.put("price",imp.getBidFloor());
 
-            AdEntity ad = AdRepo.findById(imp.getAdServedId()) 
-            .orElseThrow(() -> new RuntimeException("Ad not found with id: "));
-
+            Long id = imp.getAdServedId();
+            if(id != null){
+                AdEntity ad = AdRepo.findById(id) 
+            .orElseThrow(() -> new IllegalArgumentException("Invalid AdEntity Id"));
             bid.put("cid", ad.getCampaign().getId());
+            }
+
             bids.add(bid);
         }
 
