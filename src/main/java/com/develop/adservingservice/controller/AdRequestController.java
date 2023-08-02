@@ -1,6 +1,7 @@
 package com.develop.adservingservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,5 +20,10 @@ public class AdRequestController {
     public AdRequestEntity createUser(@RequestBody AdRequestEntity adrequest){
         AdRequestRepo.save(adrequest);
         return adrequest;
+    }
+
+    @GetMapping("api/adRequests")
+    public Iterable<AdRequestEntity> getAdRequests(){
+        return AdRequestRepo.findAll();
     }
 }

@@ -12,6 +12,7 @@ public class ImpEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double bidFloor;
+    private Long adServedId;
 
     @JsonBackReference
     @ManyToOne
@@ -24,6 +25,10 @@ public class ImpEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public Long getId() {
+        return id;
     }
 
     public double getBidFloor() {
@@ -49,5 +54,12 @@ public class ImpEntity {
     public void setAdBanner(AdBannerEntity adBanner) {
         this.adBanner = adBanner;
     }
-    
+
+    public Long getAdServedId() {
+        return adServedId;
+    }
+
+    public void setAdServedId(Long adServedId) {
+        this.adServedId = adServedId;
+    }    
 }
