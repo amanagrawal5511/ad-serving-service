@@ -1,0 +1,32 @@
+version: "3.9"  # Use the desired version of Docker Compose
+
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 11223344
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  springapp:
+    image: adservingservice:latest
+    build: .
+    container_name: adservingservice
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 11223344
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
