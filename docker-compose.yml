@@ -13,7 +13,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
-
   springapp:
     image: adservingservice:latest
     build: .
@@ -22,11 +21,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 11223344
+
     ports:
       - "8080:8080"
     restart: always
     depends_on:
       - db
-
 volumes:
   pgdata:
+
