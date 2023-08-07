@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AdvertiserController {
+
+
     @GetMapping
     public String Home(){
         return "this is the home page of Ad serving service";
@@ -22,7 +24,6 @@ public class AdvertiserController {
         AdvertiserRepo.save(advertiser);
         return advertiser;
     }
-
     @GetMapping("api/advertisers")
         public Iterable<AdvertiserEntity> getAdvertisers(){
         return AdvertiserRepo.findAll();
