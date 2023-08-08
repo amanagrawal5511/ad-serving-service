@@ -1,30 +1,27 @@
 package com.develop.adservingservice.controller;
 
-import com.develop.adservingservice.Repository.AdvertiserRepository;
 import com.develop.adservingservice.entity.AdvertiserEntity;
+import com.develop.adservingservice.services.AdvertiserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api")
 public class AdvertiserController {
-    @GetMapping
-    public String Home(){
-        return "this is the home page of Ad serving service";
-    }
 
     @Autowired
-    private AdvertiserRepository AdvertiserRepo;
+    private AdvertiserService advertiserService;
 
-    @PostMapping("api/registerAdvertiser")
+    // To Create the advertiser
+    @PostMapping("/registerAdvertiser")
     public AdvertiserEntity createAdvertiser(@RequestBody AdvertiserEntity advertiser){
-        // AdvertiserEntity newAdvertiser = new AdvertiserEntity();
-
-        AdvertiserRepo.save(advertiser);
-        return advertiser;
+        return advertiserService.createAdvertiser(advertiser);
     }
 
-    @GetMapping("api/advertisers")
+    // To create the advertiser
+    @GetMapping("/advertisers")
         public Iterable<AdvertiserEntity> getAdvertisers(){
-        return AdvertiserRepo.findAll();
+        return advertiserService.getAllAdvertiser();
     }
 }

@@ -1,157 +1,92 @@
 package com.develop.adservingservice.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.develop.adservingservice.Repository.AdBannerRepository;
-import com.develop.adservingservice.Repository.AdRepository;
-import com.develop.adservingservice.Repository.AdRequestRepository;
-import com.develop.adservingservice.Repository.ImpRepository;
-import com.develop.adservingservice.entity.AdEntity;
 import com.develop.adservingservice.entity.AdRequestEntity;
-import com.develop.adservingservice.entity.ImpEntity;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.develop.adservingservice.services.AdRequestResponseService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
+@RequestMapping("/api")
 public class AdRequestResponse {
 
     @Autowired
-    private AdBannerRepository AdBannerRepo;
+    private AdRequestResponseService adRequestResponse;
 
-    @Autowired
-    private ImpRepository ImpRepo;
-
-    @Autowired
-    private AdRequestRepository AdRequestRepo;
-
-    @Autowired
-    private AdRepository AdRepo;
-
-    @GetMapping("api/adRequest")
-    public ObjectNode serveAdRequest(@RequestParam(name ="adrequest_id") Long adrequestId ){
-
-        AdRequestEntity adrequest = AdRequestRepo.findById(adrequestId)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid AdRequest Id"));
-       // System.out.println(adrequest);
-
-       // Getting Impressions from the AdRequest(Body)
-		List<ImpEntity> imps = adrequest.getImpression();
-		ImpEntity[] array = imps.toArray(new ImpEntity[imps.size()]);
-	// 	for (int i=0; i<imps.size(); i++)
-	// 	{
-	// 		ImpEntity imp = array[i];
-	// 		// Getting Banners from the Imp(Body) & saving them.
-	// 		AdBannerRepo.save(imp.getAdBanner());
-	// 		// Saving Imps
-	// 		ImpRepo.save(imp);
-	// 	}
-
-    //     AdRequestRepo.save(adrequest);
-        
-        
-        List<AdEntity> ads = (List<AdEntity>) AdRepo.findAll();
-
-        for(ImpEntity imp: array){
-
-            for(AdEntity ad:ads){
-                if(ad.getAdHeight()<imp.getAdBanner().getHeight() && ad.getAdWidth()<imp.getAdBanner().getWidth()){
-                    imp.setAdServedId(ad.getId());
-                    break;
-                }
-            }
-        }
-
-        ObjectNode adResponse = JsonNodeFactory.instance.objectNode();
-        adResponse.put("id",adrequest.getId());
-        
-        ArrayNode tags = JsonNodeFactory.instance.arrayNode();
-        for(String str:adrequest.getCurrencyType()){
-            tags.add(str);
-        }
-        adResponse.set("currenyType", tags);
-
-        ArrayNode bids = JsonNodeFactory.instance.arrayNode();
-        for(ImpEntity imp: array){
-
-            ObjectNode bid = JsonNodeFactory.instance.objectNode();
-            //System.out.println(imp.getId());
-            bid.put("impid", imp.getId());
-            bid.put("price",imp.getBidFloor());
-            bid.put("nurl", "localhost:8080/api/winnotice?Id="+(adrequest.getId()));
-
-            Long id = imp.getAdServedId();
-            if(id != null){
-                AdEntity ad = AdRepo.findById(id) 
-            .orElseThrow(() -> new IllegalArgumentException("Invalid AdEntity Id"));
-            bid.put("cid", ad.getCampaign().getId());
-            }
-            
-            bids.add(bid);
-        }
-
-        ArrayNode seatbids = JsonNodeFactory.instance.arrayNode();
-	    ObjectNode aux_bids = JsonNodeFactory.instance.objectNode();
-        aux_bids.set("bids",bids);
-	    seatbids.add(aux_bids);
-	    adResponse.set("seatbid", seatbids);
-        
-        return adResponse;
-        //return adrequest;
+    @PostMapping("/adRequest")
+    public ObjectNode serveAdRequest(@RequestBody AdRequestEntity adrequest){
+        return adRequestResponse.serveAdRequest(adrequest);
     }
 
-    @GetMapping("api/winnotice")
+    @GetMapping("/winnotice")
     public ObjectNode getWinNotice(@RequestParam(name="Id") Long Id){
-
-        AdRequestEntity adRequest = AdRequestRepo.findById(Id) 
-            .orElseThrow(() -> new IllegalArgumentException("Invalid AdRequest Id"));
-
-        // Getting Impressions from the AdRequest(Body)
-		List<ImpEntity> imps = adRequest.getImpression();
-		ImpEntity[] array = imps.toArray(new ImpEntity[imps.size()]);
-
-        ObjectNode winObject = JsonNodeFactory.instance.objectNode();
-        winObject.put("Id",Id);
-
-        ArrayNode tags = JsonNodeFactory.instance.arrayNode();
-        for(String str: adRequest.getCurrencyType()){
-            tags.add(str);
-        }
-        winObject.set("currenyType", tags);
-
-        ArrayNode bids = JsonNodeFactory.instance.arrayNode();
-        for(ImpEntity imp: array){
-
-            ObjectNode bid = JsonNodeFactory.instance.objectNode();
-            bid.put("impid", imp.getId());
-            bid.put("price",imp.getBidFloor());
-
-            Long id = imp.getAdServedId();
-            if(id != null){
-                AdEntity ad = AdRepo.findById(id) 
-            .orElseThrow(() -> new IllegalArgumentException("Invalid AdEntity Id"));
-            bid.put("cid", ad.getCampaign().getId());
-            }
-
-            bids.add(bid);
-        }
-
-        ArrayNode seatbids = JsonNodeFactory.instance.arrayNode();
-	    ObjectNode aux_bids = JsonNodeFactory.instance.objectNode();
-        aux_bids.set("bids",bids);
-	    seatbids.add(aux_bids);
-	    winObject.set("seatbid", seatbids);
-
-        return winObject;
-
+        return adRequestResponse.getWinNotice(Id);
     }
 
 }
 
+// adRequest Format
+
+// {
+//         "id": 1,
+//         "aucctionType": 1,
+//         "impression": [
+//             {
+//                 "id": 1,
+//                 "bidFloor": 1.12,
+//                 "adServedId": null,
+//                 "adBanner": {
+//                     "id": 1,
+//                     "height": 0.5,
+//                     "width": 10.0
+//                 }
+//             },
+//             {
+//                 "id": 2,
+//                 "bidFloor": 2.12,
+//                 "adServedId": null,
+//                 "adBanner": {
+//                     "id": 2,
+//                     "height": 50.0,
+//                     "width": 110.0
+//                 }
+//             }
+//         ],
+//         "currencyType": [
+//             "EUR",
+//             "USD"
+//         ]
+// }
+
+// adResponse Format
+
+// {
+//     "id": 1,
+//     "currenyType": [
+//         "EUR",
+//         "USD"
+//     ],
+//     "seatbid": [
+//         {
+//             "bids": [
+//                 {
+//                     "impid": 1,
+//                     "price": 1.12,
+//                     "nurl": "localhost:8080/api/winnotice?Id=1"
+//                 },
+//                 {
+//                     "impid": 2,
+//                     "price": 2.12,
+//                     "nurl": "localhost:8080/api/winnotice?Id=1",
+//                     "cid": 1
+//                 }
+//             ]
+//         }
+//     ]
+// }
