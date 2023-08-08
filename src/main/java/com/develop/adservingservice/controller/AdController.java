@@ -1,29 +1,24 @@
 package com.develop.adservingservice.controller;
 
-import com.develop.adservingservice.Repository.AdRepository;
-import com.develop.adservingservice.Repository.CampaignRepository;
 import com.develop.adservingservice.entity.AdEntity;
-import com.develop.adservingservice.entity.CampaignEntity;
+import com.develop.adservingservice.services.AdService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api")
 public class AdController {
+
     @Autowired
-    private AdRepository adRepo;
-    @Autowired
-    private CampaignRepository campaignRepo;
+    private AdService adService;
+
     @PostMapping("api/registerAd")
     public AdEntity createAd(@RequestBody AdEntity ad, @RequestParam(name = "campaign_id") Long campaignId){
-        // Check if the advertiser exists
-        CampaignEntity campaign = campaignRepo.findById(campaignId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid campaign ID"));
-        ad.setCampaign(campaign);
-        adRepo.save(ad);
-        return ad;
+        return adService.createAd(ad, campaignId);
     }
     @GetMapping("api/ads")
     public Iterable<AdEntity> getAds(){
-        return adRepo.findAll();
+        return adService.getAllAd();
     }
 }

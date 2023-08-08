@@ -4,26 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.develop.adservingservice.Repository.AdRequestRepository;
 import com.develop.adservingservice.entity.AdRequestEntity;
+import com.develop.adservingservice.services.AdRequestService;
 
 
 @RestController
+@RequestMapping("/api")
 public class AdRequestController {
 
     @Autowired
-    private AdRequestRepository AdRequestRepo;
+    private AdRequestService adRequestService;
 
-    @PostMapping("api/registerAdRequest")
-    public AdRequestEntity createUser(@RequestBody AdRequestEntity adrequest){
-        AdRequestRepo.save(adrequest);
-        return adrequest;
+    @PostMapping("/registerAdRequest")
+    public AdRequestEntity createAdRequest(@RequestBody AdRequestEntity adrequest){
+        return adRequestService.createAdRequest(adrequest);
     }
 
-    @GetMapping("api/adRequests")
+    @GetMapping("/adRequests")
     public Iterable<AdRequestEntity> getAdRequests(){
-        return AdRequestRepo.findAll();
+        return adRequestService.getAllAdRequest();
     }
 }
