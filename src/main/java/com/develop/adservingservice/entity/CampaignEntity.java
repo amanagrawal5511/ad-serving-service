@@ -13,6 +13,7 @@ public class CampaignEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    //TODO: Add budget field
     private String name;
     private String status;
     private LocalDate startDate;

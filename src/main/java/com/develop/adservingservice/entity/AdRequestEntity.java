@@ -12,7 +12,7 @@ public class AdRequestEntity {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
-	private Integer aucctionType;
+	private Integer auctionType;
 	private List <String> currencyTypes;
 
     @JsonManagedReference
@@ -26,10 +26,10 @@ public class AdRequestEntity {
         this.id = id;
     }
     public Integer getAucctionType() {
-        return aucctionType;
+        return auctionType;
     }
     public void setAucctionType(Integer aucctionType) {
-        this.aucctionType = aucctionType;
+        this.auctionType = aucctionType;
     }
     public List<String> getCurrencyType() {
         return currencyTypes;

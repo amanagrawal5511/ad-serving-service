@@ -11,6 +11,9 @@ public class AdvertiserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    //TODO: Add gmail  and mark it as unique column
+
     private String name;
     private String country;
 
