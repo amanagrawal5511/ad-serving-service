@@ -81,12 +81,15 @@ public class AdRequestResponseService {
             bid.put("impid", imp.getId());
             bid.put("price", imp.getBidFloor());
             bid.put("nurl", "localhost:8080/api/winnotice?Id=" + (adrequest.getId()));
-
+            
             Long id = imp.getAdServedId();
             if (id != null) {
                 AdEntity ad = AdRepo.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("Invalid AdEntity Id"));
                 bid.put("cid", ad.getCampaign().getId());
+                bid.put("Advertiser", ad.getCampaign().getAdvertiser().getName());
+                bid.put("adServedId",id);
+
             }
 
             bids.add(bid);

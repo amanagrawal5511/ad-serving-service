@@ -1,6 +1,6 @@
 [
     {
-        "id": 3,
+        "id": 4,
         "currenyType": [
             "EUR",
             "USD"
@@ -9,20 +9,39 @@
             {
                 "bids": [
                     {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
+                        "impid": 5,
+                        "price": 6.12,
+                        "nurl": "localhost:8080/api/winnotice?Id=4",
+                        "cid": 1,
+                        "Advertiser": "Devansh",
+                        "adServedId": 1
                     }
                 ]
             }
-        ]
+        ],
+        "dateTimeCreation": "2023-08-16 16:17:02"
+    },
+    {
+        "id": 4,
+        "currenyType": [
+            "EUR",
+            "USD"
+        ],
+        "seatbid": [
+            {
+                "bids": [
+                    {
+                        "impid": 5,
+                        "price": 6.12,
+                        "nurl": "localhost:8080/api/winnotice?Id=4",
+                        "cid": 1,
+                        "Advertiser": "Devansh",
+                        "adServedId": 1
+                    }
+                ]
+            }
+        ],
+        "dateTimeCreation": "2023-08-16 16:17:31"
     },
     {
         "id": 2,
@@ -37,117 +56,22 @@
                         "impid": 1,
                         "price": 3.12,
                         "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
+                        "cid": 1,
+                        "Advertiser": "Devansh",
+                        "adServedId": 1
                     },
                     {
                         "impid": 2,
                         "price": 3.12,
                         "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
+                        "cid": 1,
+                        "Advertiser": "Devansh",
+                        "adServedId": 1
                     }
                 ]
             }
-        ]
-    },
-    {
-        "id": 2,
-        "currenyType": [
-            "EUR",
-            "USD"
         ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 1,
-                        "price": 3.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 2,
-                        "price": 3.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 1,
-                        "price": 3.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 2,
-                        "price": 3.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 1,
-                        "price": 3.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 2,
-                        "price": 3.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 1,
-                        "price": 3.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 2,
-                        "price": 3.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=2",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
+        "dateTimeCreation": "2023-08-16 16:20:56"
     },
     {
         "id": 3,
@@ -162,242 +86,21 @@
                         "impid": 3,
                         "price": 4.12,
                         "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
+                        "cid": 1,
+                        "Advertiser": "Devansh",
+                        "adServedId": 1
                     },
                     {
                         "impid": 4,
                         "price": 5.12,
                         "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "currenyType": [
-            "EUR",
-            "USD"
-        ],
-        "seatbid": [
-            {
-                "bids": [
-                    {
-                        "impid": 3,
-                        "price": 4.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
-                    },
-                    {
-                        "impid": 4,
-                        "price": 5.12,
-                        "nurl": "localhost:8080/api/winnotice?Id=3",
-                        "cid": 1
+                        "cid": 1,
+                        "Advertiser": "Devansh",
+                        "adServedId": 1
                     }
                 ]
             }
         ],
-        "dateTimeCreation": "2023-08-16 13:54:57"
+        "dateTimeCreation": "2023-08-16 16:21:25"
     }
 ]

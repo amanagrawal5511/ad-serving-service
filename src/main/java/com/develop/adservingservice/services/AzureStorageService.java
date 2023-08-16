@@ -43,8 +43,8 @@ public class AzureStorageService {
                 blobClient.deleteIfExists();
             }
             // Upload the local file as a new blob since it doesn't exist
-
-            System.out.println("\nUploading to Blob storage as blob:\n\t" + blobClient.getBlobUrl());
+            // + blobClient.getBlobUrl()
+            System.out.println("\nUploading to Blob storage as blob:\n\t");
             blobClient.uploadFromFile(local_file_path);
 
         } catch (Exception e) {
