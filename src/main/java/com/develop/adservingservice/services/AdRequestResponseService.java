@@ -1,11 +1,15 @@
 package com.develop.adservingservice.services;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.develop.adservingservice.Repository.AdBannerRepository;
 import com.develop.adservingservice.Repository.AdRepository;
 import com.develop.adservingservice.Repository.AdRequestRepository;
 import com.develop.adservingservice.Repository.ImpRepository;
@@ -26,15 +30,14 @@ public class AdRequestResponseService {
     private ImpRepository ImpRepo;
 
     @Autowired
-    private AdBannerRepository AdBannerRepo;
-
-    @Autowired
     private AdRepository AdRepo;
+
 
     @Autowired
     private AzureStorageService azureStorageService;
 
     @Autowired LogDataService logDataService;
+
 
     public ObjectNode serveAdRequest(AdRequestEntity adrequest) {
 
@@ -42,26 +45,42 @@ public class AdRequestResponseService {
         List<ImpEntity> imps = adrequest.getImpression();
         ImpEntity[] array = imps.toArray(new ImpEntity[imps.size()]);
 
-        for (int i = 0; i < imps.size(); i++) {
-            // Getting Banners from the Imp(Body) & saving them.
-            AdBannerRepo.save(array[i].getAdBanner());
-            // Saving Imps
-            ImpRepo.save(array[i]);
-        }
+        // for (int i=0; i<imps.size(); i++){
+        // // Getting Banners from the Imp(Body) & saving them.
+        // AdBannerRepo.save(array[i].getAdBanner());
+        // // Saving Imps
+        // ImpRepo.save(array[i]);
+        // }
 
-        AdRequestRepo.save(adrequest);
+        // AdRequestRepo.save(adrequest);
 
         List<AdEntity> ads = (List<AdEntity>) AdRepo.findAll();
 
         for (ImpEntity imp : array) {
+            //Map<Double, Long> bidValue = new HashMap<>();
+
+            List<Map.Entry<Double,Long>> bidValue = new ArrayList();
+
+            //bidVvalues.add({2.5,10L});
+
+            Double bidFloor = imp.getBidFloor();
 
             for (AdEntity ad : ads) {
                 if (ad.getAdHeight() < imp.getAdBanner().getHeight()
                         && ad.getAdWidth() < imp.getAdBanner().getWidth()) {
-                    imp.setAdServedId(ad.getId());
-                    break;
+                            double random = ThreadLocalRandom.current().nextDouble(bidFloor, bidFloor+4.0);
+                            double roundedValue = Math.round(random * 100.0) / 100.0;
+                            bidValue.add(new AbstractMap.SimpleEntry<>(roundedValue,ad.getId()));
+
                 }
             }
+
+            Collections.sort(bidValue,(val1,val2) -> val2.getKey().compareTo(val1.getKey()));
+
+            Map.Entry<Double,Long> matched = bidValue.get(0);
+            imp.setAdServedId(matched.getValue());
+            imp.setBidAmount(matched.getKey());
+            ImpRepo.save(imp);
         }
 
         ObjectNode adResponse = JsonNodeFactory.instance.objectNode();
@@ -79,9 +98,10 @@ public class AdRequestResponseService {
             ObjectNode bid = JsonNodeFactory.instance.objectNode();
             // System.out.println(imp.getId());
             bid.put("impid", imp.getId());
-            bid.put("price", imp.getBidFloor());
+            bid.put("bidFloor", imp.getBidFloor());
+            bid.put("price",imp.getBidAmount());
             bid.put("nurl", "localhost:8080/api/winnotice?Id=" + (adrequest.getId()));
-            
+
             Long id = imp.getAdServedId();
             if (id != null) {
                 AdEntity ad = AdRepo.findById(id)
@@ -106,6 +126,7 @@ public class AdRequestResponseService {
 
         azureStorageService.saveObjectNodeToBlobContainer();
         //azureStorageService.addObjectNodeToBlobContainer(adResponse);
+
 
         return adResponse;
         // return adrequest;

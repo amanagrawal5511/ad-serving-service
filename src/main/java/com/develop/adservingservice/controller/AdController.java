@@ -13,11 +13,11 @@ public class AdController {
     @Autowired
     private AdService adService;
 
-    @PostMapping("api/registerAd")
+    @PostMapping("/registerAd")
     public AdEntity createAd(@RequestBody AdEntity ad, @RequestParam(name = "campaign_id") Long campaignId){
         return adService.createAd(ad, campaignId);
     }
-    @GetMapping("api/ads")
+    @GetMapping("/ads")
     public Iterable<AdEntity> getAds(){
         return adService.getAllAd();
     }
