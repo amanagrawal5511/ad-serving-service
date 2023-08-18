@@ -1,6 +1,12 @@
 package com.develop.adservingservice.services;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Service
 public class AdRequestResponseService {
-    
+
     @Autowired
     private AdRequestRepository AdRequestRepo;
 
@@ -31,113 +37,132 @@ public class AdRequestResponseService {
     @Autowired
     private AdRepository AdRepo;
 
-    public ObjectNode serveAdRequest(AdRequestEntity adrequest){
-           
+    public ObjectNode serveAdRequest(AdRequestEntity adrequest) {
+
         // Getting Impressions from the AdRequest(Body)
-		List<ImpEntity> imps = adrequest.getImpression();
-		ImpEntity[] array = imps.toArray(new ImpEntity[imps.size()]);
+        List<ImpEntity> imps = adrequest.getImpression();
+        ImpEntity[] array = imps.toArray(new ImpEntity[imps.size()]);
 
-        for (int i=0; i<imps.size(); i++){
-                // Getting Banners from the Imp(Body) & saving them.
-			    AdBannerRepo.save(array[i].getAdBanner());
-			    // Saving Imps
-			    ImpRepo.save(array[i]);
-            }
+        // for (int i=0; i<imps.size(); i++){
+        // // Getting Banners from the Imp(Body) & saving them.
+        // AdBannerRepo.save(array[i].getAdBanner());
+        // // Saving Imps
+        // ImpRepo.save(array[i]);
+        // }
 
-             AdRequestRepo.save(adrequest);
+        // AdRequestRepo.save(adrequest);
 
         List<AdEntity> ads = (List<AdEntity>) AdRepo.findAll();
 
-        for(ImpEntity imp: array){
+        for (ImpEntity imp : array) {
+            //Map<Double, Long> bidValue = new HashMap<>();
 
-            for(AdEntity ad:ads){
-                if(ad.getAdHeight()<imp.getAdBanner().getHeight() && ad.getAdWidth()<imp.getAdBanner().getWidth()){
-                    imp.setAdServedId(ad.getId());
-                    break;
+            List<Map.Entry<Double,Long>> bidValue = new ArrayList();
+
+            //bidVvalues.add({2.5,10L});
+
+            Double bidFloor = imp.getBidFloor();
+
+            for (AdEntity ad : ads) {
+                if (ad.getAdHeight() < imp.getAdBanner().getHeight()
+                        && ad.getAdWidth() < imp.getAdBanner().getWidth()) {
+                            double random = ThreadLocalRandom.current().nextDouble(bidFloor, bidFloor+4.0);
+                            double roundedValue = Math.round(random * 100.0) / 100.0;
+                            bidValue.add(new AbstractMap.SimpleEntry<>(roundedValue,ad.getId()));
                 }
             }
+
+            Collections.sort(bidValue,(val1,val2) -> val2.getKey().compareTo(val1.getKey()));
+
+            Map.Entry<Double,Long> matched = bidValue.get(0);
+            imp.setAdServedId(matched.getValue());
+            imp.setBidAmount(matched.getKey());
+            ImpRepo.save(imp);
         }
 
         ObjectNode adResponse = JsonNodeFactory.instance.objectNode();
-        adResponse.put("id",adrequest.getId());
-        
+        adResponse.put("id", adrequest.getId());
+
         ArrayNode tags = JsonNodeFactory.instance.arrayNode();
-        for(String str:adrequest.getCurrencyType()){
+        for (String str : adrequest.getCurrencyType()) {
             tags.add(str);
         }
         adResponse.set("currenyType", tags);
 
         ArrayNode bids = JsonNodeFactory.instance.arrayNode();
-        for(ImpEntity imp: array){
+        for (ImpEntity imp : array) {
 
             ObjectNode bid = JsonNodeFactory.instance.objectNode();
-            //System.out.println(imp.getId());
+            // System.out.println(imp.getId());
             bid.put("impid", imp.getId());
-            bid.put("price",imp.getBidFloor());
-            bid.put("nurl", "localhost:8080/api/winnotice?Id="+(adrequest.getId()));
+            bid.put("bidFloor", imp.getBidFloor());
+            bid.put("price",imp.getBidAmount());
+            bid.put("nurl", "localhost:8080/api/winnotice?Id=" + (adrequest.getId()));
 
             Long id = imp.getAdServedId();
-            if(id != null){
-                AdEntity ad = AdRepo.findById(id) 
-            .orElseThrow(() -> new IllegalArgumentException("Invalid AdEntity Id"));
-            bid.put("cid", ad.getCampaign().getId());
+            if (id != null) {
+                AdEntity ad = AdRepo.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid AdEntity Id"));
+                bid.put("cid", ad.getCampaign().getId());
+                bid.put("Advertiser", ad.getCampaign().getAdvertiser().getName());
+                bid.put("adServedId",id);
             }
-            
+
             bids.add(bid);
         }
 
         ArrayNode seatbids = JsonNodeFactory.instance.arrayNode();
-	    ObjectNode aux_bids = JsonNodeFactory.instance.objectNode();
-        aux_bids.set("bids",bids);
-	    seatbids.add(aux_bids);
-	    adResponse.set("seatbid", seatbids);
-        
+        ObjectNode aux_bids = JsonNodeFactory.instance.objectNode();
+        aux_bids.set("bids", bids);
+        seatbids.add(aux_bids);
+        adResponse.set("seatbid", seatbids);
+
         return adResponse;
-        //return adrequest;
+        // return adrequest;
     }
 
-    public ObjectNode getWinNotice(Long Id){
+    public ObjectNode getWinNotice(Long Id) {
 
-        AdRequestEntity adRequest = AdRequestRepo.findById(Id) 
-            .orElseThrow(() -> new IllegalArgumentException("Invalid AdRequest Id"));
+        AdRequestEntity adRequest = AdRequestRepo.findById(Id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid AdRequest Id"));
 
         // Getting Impressions from the AdRequest(Body)
-		List<ImpEntity> imps = adRequest.getImpression();
-		ImpEntity[] array = imps.toArray(new ImpEntity[imps.size()]);
+        List<ImpEntity> imps = adRequest.getImpression();
+        ImpEntity[] array = imps.toArray(new ImpEntity[imps.size()]);
 
         ObjectNode winObject = JsonNodeFactory.instance.objectNode();
-        winObject.put("Id",Id);
+        winObject.put("Id", Id);
 
         ArrayNode tags = JsonNodeFactory.instance.arrayNode();
-        for(String str: adRequest.getCurrencyType()){
+        for (String str : adRequest.getCurrencyType()) {
             tags.add(str);
         }
         winObject.set("currenyType", tags);
 
         ArrayNode bids = JsonNodeFactory.instance.arrayNode();
-        for(ImpEntity imp: array){
+        for (ImpEntity imp : array) {
 
             ObjectNode bid = JsonNodeFactory.instance.objectNode();
             bid.put("impid", imp.getId());
-            bid.put("price",imp.getBidFloor());
+            bid.put("price", imp.getBidFloor());
 
             Long id = imp.getAdServedId();
-            if(id != null){
-                AdEntity ad = AdRepo.findById(id) 
-            .orElseThrow(() -> new IllegalArgumentException("Invalid AdEntity Id"));
-            bid.put("cid", ad.getCampaign().getId());
+            if (id != null) {
+                AdEntity ad = AdRepo.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid AdEntity Id"));
+                bid.put("cid", ad.getCampaign().getId());
             }
 
             bids.add(bid);
         }
 
         ArrayNode seatbids = JsonNodeFactory.instance.arrayNode();
-	    ObjectNode aux_bids = JsonNodeFactory.instance.objectNode();
-        aux_bids.set("bids",bids);
-	    seatbids.add(aux_bids);
-	    winObject.set("seatbid", seatbids);
+        ObjectNode aux_bids = JsonNodeFactory.instance.objectNode();
+        aux_bids.set("bids", bids);
+        seatbids.add(aux_bids);
+        winObject.set("seatbid", seatbids);
 
         return winObject;
 
-    } 
+    }
 }

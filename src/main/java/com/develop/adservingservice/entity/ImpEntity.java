@@ -13,6 +13,7 @@ public class ImpEntity {
     private Long id;
     private double bidFloor;
     private Long adServedId;
+    private double bidAmount;
 
     @JsonBackReference
     @ManyToOne
@@ -61,5 +62,15 @@ public class ImpEntity {
 
     public void setAdServedId(Long adServedId) {
         this.adServedId = adServedId;
-    }    
+    }
+
+    public double getBidAmount() {
+        return bidAmount;
+    }
+
+    public void setBidAmount(double bidAmount) {
+        this.bidAmount = bidAmount;
+    }
+
+       
 }
